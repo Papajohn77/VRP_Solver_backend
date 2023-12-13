@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  postgres-db-dev:
+    image: postgres:16
+    container_name: postgres-db-dev
+    volumes:
+      - postgres-data-dev:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: vrpsolver
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: vrpsolver
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "-U",
+          "postgres",
+          "-d",
+          "container_instances_metrics",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+
+  pgadmin-dev:
+    image: dpage/pgadmin4
+    container_name: pgadmin-dev
+    volumes:
+      - pgadmin-data-dev:/var/lib/pgadmin
+    ports:
+      - "8000:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: johnpapadatos77@hotmail.com
+      PGADMIN_DEFAULT_PASSWORD: mysecretpassword
+    restart: unless-stopped
+    depends_on:
+      postgres-db-dev:
+        condition: service_healthy
+
+volumes:
+  postgres-data-dev:
+  pgadmin-data-dev:

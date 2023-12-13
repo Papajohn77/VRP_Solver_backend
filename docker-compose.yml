@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  postgres-db:
+    image: postgres:16
+    container_name: postgres-db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    env_file:
+      - ./env/postgres-db.env
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "-U",
+          "postgres",
+          "-d",
+          "container_instances_metrics",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "8001:80"
+    env_file:
+      - ./env/pgadmin.env
+    restart: unless-stopped
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+
+  vrp-solver-api:
+    build: ./vrp-solver-api # Replace with a Docker Hub image
+    container_name: vrp-solver-api
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./env/vrp-solver-api.env
+    restart: unless-stopped
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+
+volumes:
+  postgres-data:
+  pgadmin-data:

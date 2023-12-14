@@ -38,7 +38,7 @@ services:
         condition: service_healthy
 
   vrp-solver-api:
-    build: ./vrp-solver-api # Replace with a Docker Hub image
+    image: papajohn77/vrp-solver-api
     container_name: vrp-solver-api
     ports:
       - "8080:8080"

@@ -38,7 +38,7 @@ public class ModelService {
         }
 
         Model savedModel = modelRepository.save(
-            new Model(modelToCreate.name())
+            Model.builder().name(modelToCreate.name()).build()
         );
         return new ModelCreateResponseDTO(savedModel.getId());
     }

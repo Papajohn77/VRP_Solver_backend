@@ -43,8 +43,8 @@ class ModelServiceTest {
     @Test
     void testGetModels() {
         // Given
-        Model model_1 = new Model("model_1");
-        Model model_2 = new Model("model_2");
+        Model model_1 = Model.builder().id(1).name("model_1").build();
+        Model model_2 = Model.builder().id(2).name("model_2").build();
         given(modelRepository.findAll())
             .willReturn(List.of(model_1, model_2));
 
@@ -88,7 +88,7 @@ class ModelServiceTest {
         given(modelRepository.findByName(modelToCreate.name()))
             .willReturn(Optional.empty());
 
-        Model modelSaved = new Model(modelToCreate.name());
+        Model modelSaved = Model.builder().id(1).name(modelToCreate.name()).build();
         given(modelRepository.save(any()))
             .willReturn(modelSaved);
 

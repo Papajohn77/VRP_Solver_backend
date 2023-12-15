@@ -7,9 +7,11 @@ spring:
     hibernate:
       ddl-auto: none
 
-server:
-  error:
-    include-message: always
+google:
+  maps:
+    api:
+      enabled: true
+      key: ${GOOGLE_MAPS_API_KEY}
 
 springdoc:
   api-docs:

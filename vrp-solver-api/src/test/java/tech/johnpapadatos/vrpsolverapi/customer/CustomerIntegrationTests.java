@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -20,13 +21,14 @@ import tech.johnpapadatos.vrpsolverapi.customer.schemas.CustomerCreateRequestDTO
 import tech.johnpapadatos.vrpsolverapi.model.ModelRepository;
 import tech.johnpapadatos.vrpsolverapi.model.schemas.ModelCreateRequestDTO;
 
+@ActiveProfiles("test")
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
         "spring.datasource.url=jdbc:tc:postgresql:16:///vrpsolver" 
     }
 )
-class CustomerControllerTest {
+class CustomerIntegrationTests {
 
     @LocalServerPort
     private Integer port;

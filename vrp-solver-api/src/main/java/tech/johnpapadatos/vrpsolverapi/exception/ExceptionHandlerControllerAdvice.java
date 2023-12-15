@@ -33,6 +33,18 @@ public class ExceptionHandlerControllerAdvice {
     }
 
     @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = BadRequestException.class)
+    public ExceptionResponseDTO handleBadRequestException(
+        BadRequestException badRequestException
+    ) {
+        return new ExceptionResponseDTO(
+            badRequestException.getMessage(), 
+            ZonedDateTime.now()
+        );
+    }
+
+    @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = NotFoundException.class)
     public ExceptionResponseDTO handleNotFoundException(
@@ -64,6 +76,18 @@ public class ExceptionHandlerControllerAdvice {
     ) {
         return new ExceptionResponseDTO(
             "An unexpected error occurred.", 
+            ZonedDateTime.now()
+        );
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    @ExceptionHandler(value = BadGatewayException.class)
+    public ExceptionResponseDTO handleBadGatewayException(
+        BadGatewayException badGatewayException
+    ) {
+        return new ExceptionResponseDTO(
+            badGatewayException.getMessage(), 
             ZonedDateTime.now()
         );
     }

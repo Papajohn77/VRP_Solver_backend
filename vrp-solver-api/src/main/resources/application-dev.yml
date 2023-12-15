@@ -11,9 +11,11 @@ spring:
         show_sql: true
         format_sql: true
 
-server:
-  error:
-    include-message: always
+google:
+  maps:
+    api:
+      enabled: true
+      key: AIzaSyBnWTSBT6Nm5WAiRdTXpq33NcguH53HMTs
 
 springdoc:
   api-docs:

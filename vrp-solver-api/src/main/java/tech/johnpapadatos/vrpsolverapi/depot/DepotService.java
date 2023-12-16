@@ -36,9 +36,8 @@ public class DepotService {
 
         Depot depot = model.get().getDepot();
         if (depot == null) {
-            throw new NotFoundException(
-                "There is no depot for the model with id=" + modelId
-            );
+            // Does not respond with 404 due to frontend limitation.
+            return new DepotResponseDTO(null);
         }
 
         return new DepotResponseDTO(

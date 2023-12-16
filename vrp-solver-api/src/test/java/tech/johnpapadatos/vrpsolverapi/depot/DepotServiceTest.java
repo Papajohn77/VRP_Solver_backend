@@ -1,6 +1,7 @@
 package tech.johnpapadatos.vrpsolverapi.depot;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -102,11 +103,10 @@ class DepotServiceTest {
             .willReturn(Optional.of(model_1));
 
         // When
+        DepotResponseDTO depot = underTest.getDepotByModelId(model_1.getId());
+
         // Then
-        assertThrows(
-            NotFoundException.class, 
-            () -> underTest.getDepotByModelId(model_1.getId())
-        );
+        assertNull(depot.depot());
     }
 
     @Test

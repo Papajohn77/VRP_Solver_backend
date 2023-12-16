@@ -2,6 +2,7 @@ package tech.johnpapadatos.vrpsolverapi.depot;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Map;
 
@@ -110,17 +111,14 @@ class DepotIntegrationTests {
         assertEquals(204, depotDeletedResponse.statusCode());
     
         // Attempt to get the depot again
-        Response getCreatedDepotNotFoundResponse = given()
+        Response getNullDepotResponse = given()
             .contentType(ContentType.JSON)
             .when()
             .get("/depot?model_id={id}", createdModelId)
             .then()
             .extract().response();
         
-        assertEquals(404, getCreatedDepotNotFoundResponse.statusCode());
-        assertEquals(
-            "There is no depot for the model with id=" + createdModelId,
-            getCreatedDepotNotFoundResponse.jsonPath().getString("detail")
-        );
+        assertEquals(200, getNullDepotResponse.statusCode());
+        assertNull(getNullDepotResponse.jsonPath().get("depot"));
     }
 }

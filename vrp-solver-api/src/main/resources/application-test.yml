@@ -2,3 +2,6 @@ google:
   maps:
     api:
       enabled: false
+
+server:
+  url: http://localhost:8080

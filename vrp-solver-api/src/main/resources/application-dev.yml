@@ -17,6 +17,9 @@ google:
       enabled: true
       key: AIzaSyBnWTSBT6Nm5WAiRdTXpq33NcguH53HMTs
 
+server:
+  url: http://localhost:8080
+
 springdoc:
   api-docs:
     path: /api-docs

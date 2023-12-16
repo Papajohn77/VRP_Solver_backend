@@ -13,6 +13,9 @@ google:
       enabled: true
       key: ${GOOGLE_MAPS_API_KEY}
 
+server:
+  url: ${VRP_SOLVER_API_URL}
+
 springdoc:
   api-docs:
     path: /api-docs

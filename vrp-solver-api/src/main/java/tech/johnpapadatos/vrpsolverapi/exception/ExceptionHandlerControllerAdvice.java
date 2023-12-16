@@ -2,6 +2,8 @@ package tech.johnpapadatos.vrpsolverapi.exception;
 
 import java.time.ZonedDateTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,6 +15,9 @@ import tech.johnpapadatos.vrpsolverapi.exception.shemas.ExceptionResponseDTO;
 
 @ControllerAdvice
 public class ExceptionHandlerControllerAdvice {
+    // TODO: Send the logs to an error tracking tool.
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionHandlerControllerAdvice.class);
+
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -74,6 +79,7 @@ public class ExceptionHandlerControllerAdvice {
     public ExceptionResponseDTO handleUnexpectedExceptions(
         Exception exception
     ) {
+        LOGGER.error(exception.getMessage(), exception);
         return new ExceptionResponseDTO(
             "An unexpected error occurred.", 
             ZonedDateTime.now()
@@ -86,6 +92,7 @@ public class ExceptionHandlerControllerAdvice {
     public ExceptionResponseDTO handleBadGatewayException(
         BadGatewayException badGatewayException
     ) {
+        LOGGER.error(badGatewayException.getMessage(), badGatewayException);
         return new ExceptionResponseDTO(
             badGatewayException.getMessage(), 
             ZonedDateTime.now()

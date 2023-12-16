@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import tech.johnpapadatos.vrpsolverapi.customer.schemas.CustomerCreateRequestDTO;
 import tech.johnpapadatos.vrpsolverapi.customer.schemas.CustomerCreateResponseDTO;
 import tech.johnpapadatos.vrpsolverapi.customer.schemas.CustomersResponseDTO;
 
+@Tag(name = "Customers")
 @RestController
 @RequestMapping("customers")
 public class CustomerController {

@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import tech.johnpapadatos.vrpsolverapi.model.schemas.ModelCreateRequestDTO;
 import tech.johnpapadatos.vrpsolverapi.model.schemas.ModelCreateResponseDTO;
 import tech.johnpapadatos.vrpsolverapi.model.schemas.ModelsResponseDTO;
 
+@Tag(name = "Models")
 @RestController
 @RequestMapping("models")
 public class ModelController {

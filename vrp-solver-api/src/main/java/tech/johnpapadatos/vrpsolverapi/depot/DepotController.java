@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import tech.johnpapadatos.vrpsolverapi.depot.schemas.DepotCreateRequestDTO;
 import tech.johnpapadatos.vrpsolverapi.depot.schemas.DepotCreateResponseDTO;
 import tech.johnpapadatos.vrpsolverapi.depot.schemas.DepotResponseDTO;
 
+@Tag(name = "Depots")
 @RestController
 @RequestMapping("depot")
 public class DepotController {

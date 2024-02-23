@@ -19,6 +19,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import tech.johnpapadatos.vrpsolverapi.customer.mappers.CustomerResponseDTOMapper;
 import tech.johnpapadatos.vrpsolverapi.customer.schemas.CustomerCreateRequestDTO;
 import tech.johnpapadatos.vrpsolverapi.customer.schemas.CustomerCreateResponseDTO;
 import tech.johnpapadatos.vrpsolverapi.customer.schemas.CustomerResponseDTO;
@@ -40,10 +41,17 @@ class CustomerServiceTest {
     @Captor
     private ArgumentCaptor<Customer> customerArgumentCaptor;
 
+    private final CustomerResponseDTOMapper customerResponseDTOMapper
+        = new CustomerResponseDTOMapper();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        underTest = new CustomerService(customerRepository, modelRepository);
+        underTest = new CustomerService(
+            customerRepository, 
+            customerResponseDTOMapper,
+            modelRepository
+        );
     }
 
     @Test

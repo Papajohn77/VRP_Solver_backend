@@ -17,6 +17,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import tech.johnpapadatos.vrpsolverapi.depot.mappers.DepotDTOMapper;
 import tech.johnpapadatos.vrpsolverapi.depot.schemas.DepotCreateRequestDTO;
 import tech.johnpapadatos.vrpsolverapi.depot.schemas.DepotCreateResponseDTO;
 import tech.johnpapadatos.vrpsolverapi.depot.schemas.DepotDTO;
@@ -38,10 +39,16 @@ class DepotServiceTest {
     @Captor
     private ArgumentCaptor<Depot> depotArgumentCaptor;
 
+    private final DepotDTOMapper depotDTOMapper = new DepotDTOMapper();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        underTest = new DepotService(depotRepository, modelRepository);
+        underTest = new DepotService(
+            depotRepository, 
+            depotDTOMapper, 
+            modelRepository
+        );
     }
 
     @Test

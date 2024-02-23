@@ -1,28 +1,37 @@
 package tech.johnpapadatos.vrpsolverapi.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import tech.johnpapadatos.vrpsolverapi.exception.AlreadyExistsException;
+import tech.johnpapadatos.vrpsolverapi.model.mappers.ModelResponseDTOMapper;
 import tech.johnpapadatos.vrpsolverapi.model.schemas.ModelCreateRequestDTO;
 import tech.johnpapadatos.vrpsolverapi.model.schemas.ModelCreateResponseDTO;
-import tech.johnpapadatos.vrpsolverapi.model.schemas.ModelResponseDTO;
 import tech.johnpapadatos.vrpsolverapi.model.schemas.ModelsResponseDTO;
 
 @Service
 public class ModelService {
     private final ModelRepository modelRepository;
+    private final ModelResponseDTOMapper modelResponseDTOMapper;
 
-    public ModelService(ModelRepository modelRepository) {
+    public ModelService(
+        ModelRepository modelRepository,
+        ModelResponseDTOMapper modelResponseDTOMapper
+    ) {
         this.modelRepository = modelRepository;
+        this.modelResponseDTOMapper = modelResponseDTOMapper;
     }
 
     public ModelsResponseDTO getModels() {
         List<Model> models = modelRepository.findAll();
-        return convertModelsToModelsResponseDTO(models);
+
+        return new ModelsResponseDTO(
+            models.stream()
+                .map(modelResponseDTOMapper)
+                .toList()
+        );
     }
 
     public ModelCreateResponseDTO createModel(
@@ -40,18 +49,7 @@ public class ModelService {
         Model savedModel = modelRepository.save(
             Model.builder().name(modelToCreate.name()).build()
         );
-        return new ModelCreateResponseDTO(savedModel.getId());
-    }
 
-    private ModelsResponseDTO convertModelsToModelsResponseDTO(
-        List<Model> models
-    ) {
-        List<ModelResponseDTO> modelResponses = new ArrayList<>();
-        for (var model : models) {
-            modelResponses.add(
-                new ModelResponseDTO(model.getId(), model.getName())
-            );
-        }
-        return new ModelsResponseDTO(modelResponses);
+        return new ModelCreateResponseDTO(savedModel.getId());
     }
 }

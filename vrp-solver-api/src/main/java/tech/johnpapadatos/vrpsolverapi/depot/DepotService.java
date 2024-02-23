@@ -4,9 +4,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import tech.johnpapadatos.vrpsolverapi.depot.mappers.DepotDTOMapper;
 import tech.johnpapadatos.vrpsolverapi.depot.schemas.DepotCreateRequestDTO;
 import tech.johnpapadatos.vrpsolverapi.depot.schemas.DepotCreateResponseDTO;
-import tech.johnpapadatos.vrpsolverapi.depot.schemas.DepotDTO;
 import tech.johnpapadatos.vrpsolverapi.depot.schemas.DepotResponseDTO;
 import tech.johnpapadatos.vrpsolverapi.exception.AlreadyExistsException;
 import tech.johnpapadatos.vrpsolverapi.exception.NotFoundException;
@@ -16,13 +16,16 @@ import tech.johnpapadatos.vrpsolverapi.model.ModelRepository;
 @Service
 public class DepotService {
     private final DepotRepository depotRepository;
+    private final DepotDTOMapper depotDTOMapper;
     private final ModelRepository modelRepository;
 
     public DepotService(
         DepotRepository depotRepository,
+        DepotDTOMapper depotDTOMapper, 
         ModelRepository modelRepository
     ) {
         this.depotRepository = depotRepository;
+        this.depotDTOMapper = depotDTOMapper;
         this.modelRepository = modelRepository;
     }
 
@@ -35,20 +38,9 @@ public class DepotService {
         }
 
         Depot depot = model.get().getDepot();
-        if (depot == null) {
-            // Does not respond with 404 due to frontend limitation.
-            return new DepotResponseDTO(null);
-        }
-
-        return new DepotResponseDTO(
-            new DepotDTO(
-                depot.getId(), 
-                depot.getName(), 
-                depot.getLatitude(), 
-                depot.getLongitude(), 
-                depot.getAddress()
-            )
-        );
+        return depot != null
+            ? new DepotResponseDTO(depotDTOMapper.apply(depot))
+            : new DepotResponseDTO(null);
     }
 
     public DepotCreateResponseDTO createDepot(

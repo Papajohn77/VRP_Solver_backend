@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import tech.johnpapadatos.vrpsolverapi.exception.AlreadyExistsException;
+import tech.johnpapadatos.vrpsolverapi.model.mappers.ModelResponseDTOMapper;
 import tech.johnpapadatos.vrpsolverapi.model.schemas.ModelCreateRequestDTO;
 import tech.johnpapadatos.vrpsolverapi.model.schemas.ModelCreateResponseDTO;
 import tech.johnpapadatos.vrpsolverapi.model.schemas.ModelResponseDTO;
@@ -34,10 +35,13 @@ class ModelServiceTest {
     @Captor
     private ArgumentCaptor<Model> modelArgumentCaptor;
 
+    private final ModelResponseDTOMapper modelResponseDTOMapper 
+        = new ModelResponseDTOMapper();
+
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
-        underTest = new ModelService(modelRepository);
+        underTest = new ModelService(modelRepository, modelResponseDTOMapper);
     }
 
     @Test

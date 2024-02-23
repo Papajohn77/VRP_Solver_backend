@@ -1,14 +1,12 @@
 package tech.johnpapadatos.vrpsolverapi.customer;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import tech.johnpapadatos.vrpsolverapi.customer.mappers.CustomerResponseDTOMapper;
 import tech.johnpapadatos.vrpsolverapi.customer.schemas.CustomerCreateRequestDTO;
 import tech.johnpapadatos.vrpsolverapi.customer.schemas.CustomerCreateResponseDTO;
-import tech.johnpapadatos.vrpsolverapi.customer.schemas.CustomerResponseDTO;
 import tech.johnpapadatos.vrpsolverapi.customer.schemas.CustomersResponseDTO;
 import tech.johnpapadatos.vrpsolverapi.exception.AlreadyExistsException;
 import tech.johnpapadatos.vrpsolverapi.exception.NotFoundException;
@@ -18,13 +16,16 @@ import tech.johnpapadatos.vrpsolverapi.model.ModelRepository;
 @Service
 public class CustomerService {
     private final CustomerRepository customerRepository;
+    private final CustomerResponseDTOMapper customerResponseDTOMapper;
     private final ModelRepository modelRepository;
 
     public CustomerService(
         CustomerRepository customerRepository,
+        CustomerResponseDTOMapper customerResponseDTOMapper,
         ModelRepository modelRepository
     ) {
         this.customerRepository = customerRepository;
+        this.customerResponseDTOMapper = customerResponseDTOMapper;
         this.modelRepository = modelRepository;
     }
 
@@ -36,8 +37,13 @@ public class CustomerService {
             );
         }
 
-        List<Customer> customers = model.get().getCustomers();
-        return convertCustomersToCustomersResponseDTO(customers);
+        return new CustomersResponseDTO(
+            model.get()
+                .getCustomers()
+                .stream()
+                .map(customerResponseDTOMapper)
+                .toList()
+        );
     }
 
     public CustomerCreateResponseDTO createCustomer(
@@ -77,24 +83,5 @@ public class CustomerService {
     public void deleteCustomer(int id) {
         // Could check if exists
         customerRepository.deleteById(id);
-    }
-
-    private CustomersResponseDTO convertCustomersToCustomersResponseDTO(
-        List<Customer> customers
-    ) {
-        List<CustomerResponseDTO> customerResponses = new ArrayList<>();
-        for (var customer : customers) {
-            customerResponses.add(
-                new CustomerResponseDTO(
-                    customer.getId(), 
-                    customer.getName(), 
-                    customer.getDemand(), 
-                    customer.getLatitude(), 
-                    customer.getLongitude(), 
-                    customer.getAddress()
-                )
-            );
-        }
-        return new CustomersResponseDTO(customerResponses);
     }
 }

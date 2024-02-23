@@ -21,6 +21,7 @@ import org.mockito.MockitoAnnotations;
 
 import tech.johnpapadatos.vrpsolverapi.vehicle.schemas.VehicleResponseDTO;
 import tech.johnpapadatos.vrpsolverapi.vehicle.schemas.VehiclesResponseDTO;
+import tech.johnpapadatos.vrpsolverapi.vehicle.mappers.VehicleResponseDTOMapper;
 import tech.johnpapadatos.vrpsolverapi.vehicle.schemas.VehicleCreateRequestDTO;
 import tech.johnpapadatos.vrpsolverapi.vehicle.schemas.VehicleCreateResponseDTO;
 import tech.johnpapadatos.vrpsolverapi.exception.AlreadyExistsException;
@@ -40,10 +41,17 @@ class VehicleServiceTest {
     @Captor
     private ArgumentCaptor<Vehicle> vehicleArgumentCaptor;
 
+    private final VehicleResponseDTOMapper vehicleResponseDTOMapper 
+        = new VehicleResponseDTOMapper();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        underTest = new VehicleService(vehicleRepository, modelRepository);
+        underTest = new VehicleService(
+            vehicleRepository, 
+            vehicleResponseDTOMapper, 
+            modelRepository
+        );
     }
 
     @Test
